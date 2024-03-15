@@ -6,7 +6,7 @@
 
 Meet **OPSd**. The unique and effortless way of managing cloud infrastructure.
 
-# terraform-module-template
+# terraform-module-digitalocean-kubernetes
 
 ## Introduction
 
@@ -15,12 +15,22 @@ What does the module provide?
 ## Usage
 
 ```hcl
-module "module_name" {
-  source  = "github.com/opsd-io/module_name?ref=v0.0.1"
+module "k8s-cluster" {
+  source  = "github.com/opsd-io/terraform-module-digitalocean-kubernetes?ref=v1.0.0"
 
-  # Variables
-  variable_1 = "foo"
-  variable_2 = "bar"
+  name   = "my-cluster"
+  region = "ams3"
+
+  default_node_pool_node_count = 1
+  default_node_pool_tags       = ["default"]
+  default_node_pool_labels = {
+    service  = "default"
+    priority = "high"
+  }
+  node_pools = local.node_pools
+
+  cluster_tags = ["k8s-version:1-29-1"]
+  common_tags  = ["ams3", "owner:me"]
 }
 ```
 
@@ -31,11 +41,14 @@ module "module_name" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.1 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
+| <a name="requirement_digitalocean"></a> [digitalocean](#requirement\_digitalocean) | 2.36.0 |
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_digitalocean"></a> [digitalocean](#provider\_digitalocean) | 2.36.0 |
 
 ## Modules
 
@@ -43,15 +56,48 @@ No modules.
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [digitalocean_kubernetes_cluster.main](https://registry.terraform.io/providers/digitalocean/digitalocean/2.36.0/docs/resources/kubernetes_cluster) | resource |
+| [digitalocean_kubernetes_node_pool.main](https://registry.terraform.io/providers/digitalocean/digitalocean/2.36.0/docs/resources/kubernetes_node_pool) | resource |
 
 ## Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_auto_upgrade"></a> [auto\_upgrade](#input\_auto\_upgrade) | Indicates whether the cluster will be automatically upgraded to new patch releases during its maintenance window. | `bool` | `false` | no |
+| <a name="input_cluster_tags"></a> [cluster\_tags](#input\_cluster\_tags) | A list of tag names to be applied exclusively to the Kubernetes cluster. | `list(string)` | `[]` | no |
+| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | A list of tag names to be applied to the Kubernetes cluster, node pools and droplets. | `list(string)` | `[]` | no |
+| <a name="input_default_node_pool_auto_scale"></a> [default\_node\_pool\_auto\_scale](#input\_default\_node\_pool\_auto\_scale) | Enable auto-scaling of the number of nodes in a default node pool. | `bool` | `false` | no |
+| <a name="input_default_node_pool_labels"></a> [default\_node\_pool\_labels](#input\_default\_node\_pool\_labels) | A map of key/value pairs to apply to nodes in a default node pool. | `map(string)` | `{}` | no |
+| <a name="input_default_node_pool_max_nodes"></a> [default\_node\_pool\_max\_nodes](#input\_default\_node\_pool\_max\_nodes) | Maximum number of nodes that a default node pool can be scaled up to. | `number` | `null` | no |
+| <a name="input_default_node_pool_min_nodes"></a> [default\_node\_pool\_min\_nodes](#input\_default\_node\_pool\_min\_nodes) | Minimum number of nodes that a default node pool can be scaled down to. | `number` | `null` | no |
+| <a name="input_default_node_pool_name"></a> [default\_node\_pool\_name](#input\_default\_node\_pool\_name) | A name for a default node pool. | `string` | `"k8s-default-node-pool"` | no |
+| <a name="input_default_node_pool_node_count"></a> [default\_node\_pool\_node\_count](#input\_default\_node\_pool\_node\_count) | The number of Droplet instances in a default node pool. | `string` | `null` | no |
+| <a name="input_default_node_pool_size"></a> [default\_node\_pool\_size](#input\_default\_node\_pool\_size) | The slug identifier for the type of Droplet to be used as workers in the node pool. | `string` | `"s-1vcpu-2gb"` | no |
+| <a name="input_default_node_pool_tags"></a> [default\_node\_pool\_tags](#input\_default\_node\_pool\_tags) | A list of tag names applied to a default node pool. | `list(string)` | `[]` | no |
+| <a name="input_ha"></a> [ha](#input\_ha) | Enable/disable the high availability control plane for a cluster. | `bool` | `false` | no |
+| <a name="input_k8s_version"></a> [k8s\_version](#input\_k8s\_version) | The slug identifier for the version of Kubernetes used for the cluster. | `string` | `"1.29.1-do.0"` | no |
+| <a name="input_maintenance_policy"></a> [maintenance\_policy](#input\_maintenance\_policy) | The cluster's maintenance window configuration. | <pre>object({<br>    start_time = string<br>    day        = string<br>  })</pre> | `null` | no |
+| <a name="input_name"></a> [name](#input\_name) | The name of the cluster. | `string` | n/a | yes |
+| <a name="input_node_pools"></a> [node\_pools](#input\_node\_pools) | A map of the cluster node pools. | <pre>map(object({<br>    size       = optional(string, "s-1vcpu-2gb")<br>    node_count = optional(number)<br>    auto_scale = optional(bool)<br>    min_nodes  = optional(number)<br>    max_nodes  = optional(number)<br>    tags       = optional(list(string))<br>    labels     = optional(map(string))<br>    taint      = optional(list(string))<br>  }))</pre> | `{}` | no |
+| <a name="input_region"></a> [region](#input\_region) | The slug identifier for the region where the Kubernetes cluster will be created. | `string` | n/a | yes |
+| <a name="input_registry_integration"></a> [registry\_integration](#input\_registry\_integration) | Enables or disables the DigitalOcean container registry integration for the cluster. | `bool` | `false` | no |
+| <a name="input_surge_upgrade"></a> [surge\_upgrade](#input\_surge\_upgrade) | Enable/disable surge upgrades for a cluster. | `bool` | `false` | no |
+| <a name="input_vpc_uuid"></a> [vpc\_uuid](#input\_vpc\_uuid) | The ID of the VPC where the Kubernetes cluster will be located. | `string` | `null` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_auto_upgrade"></a> [auto\_upgrade](#output\_auto\_upgrade) | A boolean value indicating whether the cluster will be automatically upgraded to new patch releases during its maintenance window. |
+| <a name="output_cluster_subnet"></a> [cluster\_subnet](#output\_cluster\_subnet) | The range of IP addresses in the overlay network of the Kubernetes cluster. |
+| <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | The base URL of the API server on the Kubernetes master node. |
+| <a name="output_id"></a> [id](#output\_id) | A unique ID that can be used to identify and reference a Kubernetes cluster. |
+| <a name="output_ipv4_address"></a> [ipv4\_address](#output\_ipv4\_address) | The public IPv4 address of the Kubernetes master node. |
+| <a name="output_kube_config"></a> [kube\_config](#output\_kube\_config) | A representation of the Kubernetes cluster's kubeconfig. |
+| <a name="output_node_pool"></a> [node\_pool](#output\_node\_pool) | Tthe cluster's default node pool attributes. |
+| <a name="output_service_subnet"></a> [service\_subnet](#output\_service\_subnet) | The range of assignable IP addresses for services running in the Kubernetes cluster. |
 <!-- END_TF_DOCS -->
 
 ## Examples of usage

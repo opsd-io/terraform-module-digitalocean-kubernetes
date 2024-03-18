@@ -60,7 +60,7 @@ variable "cluster_tags" {
 }
 
 variable "common_tags" {
-  description = "A list of tag names to be applied to the Kubernetes cluster, node pools and droplets."
+  description = "A list of tags to assign to every resource in this module."
   type        = list(string)
   default     = []
 }

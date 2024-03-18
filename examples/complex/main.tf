@@ -39,7 +39,7 @@ module "example" {
   }
 
   cluster_tags = ["k8s-version:1-29-1"]
-  common_tags  = ["ams3", "owner:me"]
+  common_tags  = ["ams3", "Owner:me"]
 
   default_node_pool_node_count = 1
   default_node_pool_tags       = ["default"]

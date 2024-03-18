@@ -37,7 +37,7 @@ output "auto_upgrade" {
 output "kube_config" {
   description = "A representation of the Kubernetes cluster's kubeconfig."
   sensitive   = false
-  value       = digitalocean_kubernetes_cluster.main.kube_config.0
+  value       = digitalocean_kubernetes_cluster.main.kube_config[0]
 }
 
 output "node_pool" {

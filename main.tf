@@ -30,6 +30,16 @@ resource "digitalocean_kubernetes_cluster" "main" {
     max_nodes  = var.default_node_pool_max_nodes
     tags       = concat(["Name:${var.default_node_pool_name}"], var.common_tags, var.default_node_pool_tags)
     labels     = var.default_node_pool_labels
+
+    dynamic "taint" {
+      for_each = var.default_node_pool_taints
+
+      content {
+        key    = taint.value.key
+        value  = taint.value.value
+        effect = taint.value.effect
+      }
+    }
   }
 
   dynamic "maintenance_policy" {
@@ -54,4 +64,14 @@ resource "digitalocean_kubernetes_node_pool" "main" {
   min_nodes  = each.value.min_nodes
   max_nodes  = each.value.max_nodes
   labels     = each.value.labels
+
+  dynamic "taint" {
+    for_each = each.value.taints
+
+    content {
+      key    = taint.value.key
+      value  = taint.value.value
+      effect = taint.value.effect
+    }
+  }
 }

@@ -113,6 +113,16 @@ variable "default_node_pool_labels" {
   default     = {}
 }
 
+variable "default_node_pool_taints" {
+  description = "A list of taints to apply to all nodes in a default node pool."
+  type = list(object({
+    key    = string
+    value  = string
+    effect = string
+  }))
+  default = []
+}
+
 variable "node_pools" {
   description = "A map of the cluster node pools."
   type = map(object({
@@ -123,7 +133,11 @@ variable "node_pools" {
     max_nodes  = optional(number)
     tags       = optional(list(string))
     labels     = optional(map(string))
-    taint      = optional(list(string))
+    taints = optional(list(object({
+      key    = string
+      value  = string
+      effect = string
+    })), [])
   }))
   default = {}
 }

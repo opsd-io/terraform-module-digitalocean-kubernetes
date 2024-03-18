@@ -11,6 +11,13 @@ locals {
         service  = "apps"
         priority = "high"
       }
+      taints = [
+        {
+          key    = "workloadKind",
+          value  = "database",
+          effect = "NoSchedule"
+        }
+      ]
     },
     "k8s-utils-node-pool" = {
       size = "s-1vcpu-2gb"

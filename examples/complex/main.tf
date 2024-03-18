@@ -1,17 +1,8 @@
-terraform {
-  required_providers {
-    digitalocean = {
-      source  = "digitalocean/digitalocean"
-      version = "2.36.0"
-    }
-  }
-}
-
 locals {
   node_pools = {
     "k8s-apps-node-pool" = {
       size = "s-1vcpu-2gb"
-      tags = ["apps", "terraform:k8s-apps-node-pool"]
+      tags = ["apps"]
 
       auto_scale = true
       min_nodes  = 1
@@ -20,12 +11,24 @@ locals {
         service  = "apps"
         priority = "high"
       }
+    },
+    "k8s-utils-node-pool" = {
+      size = "s-1vcpu-2gb"
+      tags = ["utils"]
+
+      auto_scale = true
+      min_nodes  = 1
+      max_nodes  = 2
+      labels = {
+        service  = "utils"
+        priority = "low"
+      }
     }
   }
 }
 
-module "k8s" {
-  source = "../terraform-module-digitalocean-kubernetes"
+module "example" {
+  source = "github.com/opsd-io/terraform-module-digitalocean-kubernetes"
   name   = "my-cluster"
   region = "ams3"
   ha     = true

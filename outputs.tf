@@ -50,3 +50,47 @@ output "node_pool" {
   sensitive   = false
   value       = digitalocean_kubernetes_cluster.main.node_pool
 }
+
+output "urn" {
+  description = "The uniform resource name (URN) for the Kubernetes cluster."
+  sensitive   = false
+  value       = digitalocean_kubernetes_cluster.main.urn
+}
+
+output "maintenance_policy" {
+  description = "The cluster's maintenance window configuration."
+  sensitive   = false
+  value       = digitalocean_kubernetes_cluster.main.maintenance_policy
+}
+
+output "extra_node_pools_id" {
+  description = "A unique ID for every non-default node pool."
+  sensitive   = false
+  value = {
+    for k, node_pool in digitalocean_kubernetes_node_pool.main : k => node_pool.id
+  }
+}
+
+output "extra_node_pools_actual_node_count" {
+  description = "The actual number of nodes in non-default node pools."
+  sensitive   = false
+  value = {
+    for k, node_pool in digitalocean_kubernetes_node_pool.main : k => node_pool.actual_node_count
+  }
+}
+
+output "extra_node_pools_nodes" {
+  description = "A list of nodes in non-default pools."
+  sensitive   = false
+  value = {
+    for k, node_pool in digitalocean_kubernetes_node_pool.main : k => node_pool.nodes
+  }
+}
+
+output "extra_node_pools_taint" {
+  description = "A list of taints applied to all nodes in every non-default pool."
+  sensitive   = false
+  value = {
+    for k, node_pool in digitalocean_kubernetes_node_pool.main : k => node_pool.taint
+  }
+}

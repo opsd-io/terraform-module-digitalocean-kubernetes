@@ -8,7 +8,7 @@ resource "digitalocean_kubernetes_cluster" "main" {
   ha                   = var.ha
   registry_integration = var.registry_integration
 
-  tags = concat(var.common_tags, var.cluster_tags)
+  tags = concat(["Name:${var.name}"], var.common_tags, var.cluster_tags)
 
   node_pool {
     name       = var.default_node_pool_name
@@ -17,7 +17,7 @@ resource "digitalocean_kubernetes_cluster" "main" {
     auto_scale = var.default_node_pool_auto_scale
     min_nodes  = var.default_node_pool_min_nodes
     max_nodes  = var.default_node_pool_max_nodes
-    tags       = concat(var.common_tags, var.default_node_pool_tags)
+    tags       = concat(["Name:${var.default_node_pool_name}"], var.common_tags, var.default_node_pool_tags)
     labels     = var.default_node_pool_labels
   }
 
@@ -37,7 +37,7 @@ resource "digitalocean_kubernetes_node_pool" "main" {
   cluster_id = digitalocean_kubernetes_cluster.main.id
   name       = each.key
   size       = each.value.size
-  tags       = concat(var.common_tags, each.value.tags)
+  tags       = concat(["Name:${each.key}"], var.common_tags, each.value.tags)
 
   auto_scale = each.value.auto_scale
   min_nodes  = each.value.min_nodes

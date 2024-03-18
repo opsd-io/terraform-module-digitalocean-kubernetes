@@ -1,5 +1,5 @@
 resource "digitalocean_kubernetes_cluster" "main" {
-  name                 = var.name
+  name                 = var.cluster_name
   region               = var.region
   version              = var.k8s_version
   vpc_uuid             = var.vpc_uuid
@@ -8,7 +8,7 @@ resource "digitalocean_kubernetes_cluster" "main" {
   ha                   = var.ha
   registry_integration = var.registry_integration
 
-  tags = concat(["Name:${var.name}"], var.common_tags, var.cluster_tags)
+  tags = concat(["Name:${var.cluster_name}"], var.common_tags, var.cluster_tags)
 
   node_pool {
     name       = var.default_node_pool_name

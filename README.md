@@ -10,7 +10,7 @@ Meet **OPSd**. The unique and effortless way of managing cloud infrastructure.
 
 ## Introduction
 
-What does the module provide?
+Terraform module to provision DigitalOcean Kubernetes service (DOKS).
 
 ## Usage
 

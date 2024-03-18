@@ -16,7 +16,7 @@ What does the module provide?
 
 ```hcl
 module "k8s-cluster" {
-  source  = "github.com/opsd-io/terraform-module-digitalocean-kubernetes?ref=v1.0.0"
+  source  = "github.com/opsd-io/terraform-module-digitalocean-kubernetes"
 
   name   = "my-cluster"
   region = "ams3"
@@ -30,7 +30,7 @@ module "k8s-cluster" {
   node_pools = local.node_pools
 
   cluster_tags = ["k8s-version:1-29-1"]
-  common_tags  = ["ams3", "owner:me"]
+  common_tags  = ["ams3", "Owner:me"]
 }
 ```
 
@@ -66,8 +66,9 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_auto_upgrade"></a> [auto\_upgrade](#input\_auto\_upgrade) | Indicates whether the cluster will be automatically upgraded to new patch releases during its maintenance window. | `bool` | `false` | no |
+| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name of the cluster. | `string` | n/a | yes |
 | <a name="input_cluster_tags"></a> [cluster\_tags](#input\_cluster\_tags) | A list of tag names to be applied exclusively to the Kubernetes cluster. | `list(string)` | `[]` | no |
-| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | A list of tag names to be applied to the Kubernetes cluster, node pools and droplets. | `list(string)` | `[]` | no |
+| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | A list of tags to assign to every resource in this module. | `list(string)` | `[]` | no |
 | <a name="input_default_node_pool_auto_scale"></a> [default\_node\_pool\_auto\_scale](#input\_default\_node\_pool\_auto\_scale) | Enable auto-scaling of the number of nodes in a default node pool. | `bool` | `false` | no |
 | <a name="input_default_node_pool_labels"></a> [default\_node\_pool\_labels](#input\_default\_node\_pool\_labels) | A map of key/value pairs to apply to nodes in a default node pool. | `map(string)` | `{}` | no |
 | <a name="input_default_node_pool_max_nodes"></a> [default\_node\_pool\_max\_nodes](#input\_default\_node\_pool\_max\_nodes) | Maximum number of nodes that a default node pool can be scaled up to. | `number` | `null` | no |
@@ -79,7 +80,6 @@ No modules.
 | <a name="input_ha"></a> [ha](#input\_ha) | Enable/disable the high availability control plane for a cluster. | `bool` | `false` | no |
 | <a name="input_k8s_version"></a> [k8s\_version](#input\_k8s\_version) | The slug identifier for the version of Kubernetes used for the cluster. | `string` | `"1.29.1-do.0"` | no |
 | <a name="input_maintenance_policy"></a> [maintenance\_policy](#input\_maintenance\_policy) | The cluster's maintenance window configuration. | <pre>object({<br>    start_time = string<br>    day        = string<br>  })</pre> | `null` | no |
-| <a name="input_name"></a> [name](#input\_name) | The name of the cluster. | `string` | n/a | yes |
 | <a name="input_node_pools"></a> [node\_pools](#input\_node\_pools) | A map of the cluster node pools. | <pre>map(object({<br>    size       = optional(string, "s-1vcpu-2gb")<br>    node_count = optional(number)<br>    auto_scale = optional(bool)<br>    min_nodes  = optional(number)<br>    max_nodes  = optional(number)<br>    tags       = optional(list(string))<br>    labels     = optional(map(string))<br>    taint      = optional(list(string))<br>  }))</pre> | `{}` | no |
 | <a name="input_region"></a> [region](#input\_region) | The slug identifier for the region where the Kubernetes cluster will be created. | `string` | n/a | yes |
 | <a name="input_registry_integration"></a> [registry\_integration](#input\_registry\_integration) | Enables or disables the DigitalOcean container registry integration for the cluster. | `bool` | `false` | no |
@@ -93,11 +93,17 @@ No modules.
 | <a name="output_auto_upgrade"></a> [auto\_upgrade](#output\_auto\_upgrade) | A boolean value indicating whether the cluster will be automatically upgraded to new patch releases during its maintenance window. |
 | <a name="output_cluster_subnet"></a> [cluster\_subnet](#output\_cluster\_subnet) | The range of IP addresses in the overlay network of the Kubernetes cluster. |
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | The base URL of the API server on the Kubernetes master node. |
+| <a name="output_extra_node_pools_actual_node_count"></a> [extra\_node\_pools\_actual\_node\_count](#output\_extra\_node\_pools\_actual\_node\_count) | The actual number of nodes in non-default node pools. |
+| <a name="output_extra_node_pools_id"></a> [extra\_node\_pools\_id](#output\_extra\_node\_pools\_id) | A unique ID for every non-default node pool. |
+| <a name="output_extra_node_pools_nodes"></a> [extra\_node\_pools\_nodes](#output\_extra\_node\_pools\_nodes) | A list of nodes in non-default pools. |
+| <a name="output_extra_node_pools_taint"></a> [extra\_node\_pools\_taint](#output\_extra\_node\_pools\_taint) | A list of taints applied to all nodes in every non-default pool. |
 | <a name="output_id"></a> [id](#output\_id) | A unique ID that can be used to identify and reference a Kubernetes cluster. |
 | <a name="output_ipv4_address"></a> [ipv4\_address](#output\_ipv4\_address) | The public IPv4 address of the Kubernetes master node. |
 | <a name="output_kube_config"></a> [kube\_config](#output\_kube\_config) | A representation of the Kubernetes cluster's kubeconfig. |
+| <a name="output_maintenance_policy"></a> [maintenance\_policy](#output\_maintenance\_policy) | The cluster's maintenance window configuration. |
 | <a name="output_node_pool"></a> [node\_pool](#output\_node\_pool) | Tthe cluster's default node pool attributes. |
 | <a name="output_service_subnet"></a> [service\_subnet](#output\_service\_subnet) | The range of assignable IP addresses for services running in the Kubernetes cluster. |
+| <a name="output_urn"></a> [urn](#output\_urn) | The uniform resource name (URN) for the Kubernetes cluster. |
 <!-- END_TF_DOCS -->
 
 ## Examples of usage

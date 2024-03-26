@@ -18,8 +18,8 @@ Terraform module to provision DigitalOcean Kubernetes service (DOKS).
 module "k8s-cluster" {
   source  = "github.com/opsd-io/terraform-module-digitalocean-kubernetes"
 
-  name   = "my-cluster"
-  region = "ams3"
+  cluster_name = "my-cluster"
+  region       = "ams3"
 
   default_node_pool_node_count = 1
   default_node_pool_tags       = ["default"]

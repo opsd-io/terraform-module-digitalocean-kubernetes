@@ -1,7 +1,7 @@
 module "example" {
-  source = "github.com/opsd-io/terraform-module-digitalocean-kubernetes"
-  name   = "my-cluster"
-  region = "ams3"
+  source       = "github.com/opsd-io/terraform-module-digitalocean-kubernetes"
+  cluster_name = "my-cluster"
+  region       = "ams3"
 
   common_tags = ["ams3", "Owner:me"]
 

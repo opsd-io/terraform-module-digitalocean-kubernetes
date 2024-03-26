@@ -35,10 +35,10 @@ locals {
 }
 
 module "example" {
-  source = "github.com/opsd-io/terraform-module-digitalocean-kubernetes"
-  name   = "my-cluster"
-  region = "ams3"
-  ha     = true
+  source       = "github.com/opsd-io/terraform-module-digitalocean-kubernetes"
+  cluster_name = "my-cluster"
+  region       = "ams3"
+  ha           = true
 
   maintenance_policy = {
     start_time = "02:00"

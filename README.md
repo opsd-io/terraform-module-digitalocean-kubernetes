@@ -42,13 +42,13 @@ module "k8s-cluster" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
-| <a name="requirement_digitalocean"></a> [digitalocean](#requirement\_digitalocean) | 2.36.0 |
+| <a name="requirement_digitalocean"></a> [digitalocean](#requirement\_digitalocean) | >= 2.36.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_digitalocean"></a> [digitalocean](#provider\_digitalocean) | 2.36.0 |
+| <a name="provider_digitalocean"></a> [digitalocean](#provider\_digitalocean) | >= 2.36.0 |
 
 ## Modules
 
@@ -58,8 +58,8 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [digitalocean_kubernetes_cluster.main](https://registry.terraform.io/providers/digitalocean/digitalocean/2.36.0/docs/resources/kubernetes_cluster) | resource |
-| [digitalocean_kubernetes_node_pool.main](https://registry.terraform.io/providers/digitalocean/digitalocean/2.36.0/docs/resources/kubernetes_node_pool) | resource |
+| [digitalocean_kubernetes_cluster.main](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/kubernetes_cluster) | resource |
+| [digitalocean_kubernetes_node_pool.main](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/kubernetes_node_pool) | resource |
 
 ## Inputs
 
@@ -100,7 +100,7 @@ No modules.
 | <a name="output_extra_node_pools_taint"></a> [extra\_node\_pools\_taint](#output\_extra\_node\_pools\_taint) | A list of taints applied to all nodes in every non-default pool. |
 | <a name="output_id"></a> [id](#output\_id) | A unique ID that can be used to identify and reference a Kubernetes cluster. |
 | <a name="output_ipv4_address"></a> [ipv4\_address](#output\_ipv4\_address) | The public IPv4 address of the Kubernetes master node. |
-| <a name="output_kube_config"></a> [kube\_config](#output\_kube\_config) | A representation of the Kubernetes cluster's kubeconfig. |
+| <a name="output_kube_config_cluster_ca_certificate"></a> [kube\_config\_cluster\_ca\_certificate](#output\_kube\_config\_cluster\_ca\_certificate) | The base64 encoded public certificate used by clients to access the cluster (derived from The cluster's kubeconfig). |
 | <a name="output_maintenance_policy"></a> [maintenance\_policy](#output\_maintenance\_policy) | The cluster's maintenance window configuration. |
 | <a name="output_node_pool"></a> [node\_pool](#output\_node\_pool) | Tthe cluster's default node pool attributes. |
 | <a name="output_service_subnet"></a> [service\_subnet](#output\_service\_subnet) | The range of assignable IP addresses for services running in the Kubernetes cluster. |

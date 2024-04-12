@@ -34,10 +34,10 @@ output "auto_upgrade" {
   value       = digitalocean_kubernetes_cluster.main.auto_upgrade
 }
 
-output "kube_config" {
-  description = "A representation of the Kubernetes cluster's kubeconfig."
+output "kube_config_cluster_ca_certificate" {
+  description = "The base64 encoded public certificate used by clients to access the cluster (derived from The cluster's kubeconfig)."
   sensitive   = false
-  value       = digitalocean_kubernetes_cluster.main.kube_config[0]
+  value       = digitalocean_kubernetes_cluster.main.kube_config[0].cluster_ca_certificate
 }
 
 output "node_pool" {

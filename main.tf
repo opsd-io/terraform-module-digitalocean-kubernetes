@@ -58,6 +58,8 @@ resource "digitalocean_kubernetes_node_pool" "main" {
   cluster_id = digitalocean_kubernetes_cluster.main.id
   name       = each.key
   size       = each.value.size
+  # the default node pool has always 'terraform' tag assigned
+  # so 'terrafom' tag is added to every custom node pool here
   tags       = concat(["Name:${each.key}"], ["terraform:${each.key}"], var.common_tags, each.value.tags)
 
   auto_scale = each.value.auto_scale
